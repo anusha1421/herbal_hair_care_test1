@@ -1,19 +1,9 @@
 from flask import Flask, request, jsonify, render_template
-import numpy as np
-import pandas as pd
-import pickle
 import os
-from PIL import Image
+import random
+import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
-
-# Importing model prediction functions (for hair care-related prediction)
-from model_predict import herbal_hair_care
-from model_predict_hair_loss import herbal_hair_care2
-
-# Load the student placement prediction model
-model_path = 'int_features3.pkl'
-with open(model_path, 'rb') as file:
-    model = pickle.load(file)
 
 # Disease dictionaries
 disease_dic = ["Alopecia", "Folliculitis", "Psoriasis"]
@@ -37,9 +27,8 @@ def disease_prediction():
         if not file:
             return render_template('disease.html', title=title)
 
-        img1 = file.read()
-        prediction = herbal_hair_care(img1)
-        prediction = str(disease_dic[prediction])
+        # Randomly select a disease from the dictionary
+        prediction = random.choice(disease_dic)
 
         if prediction == "Alopecia":
             precaution = "Alopecia is related to hair loss. Consult a dermatologist."
@@ -69,9 +58,8 @@ def disease_prediction2():
         if not file:
             return render_template('disease2.html', title=title)
 
-        img1 = file.read()
-        prediction = herbal_hair_care2(img1)
-        prediction = str(disease_dic2[prediction])
+        # Randomly select a stage from the dictionary
+        prediction = random.choice(disease_dic2)
 
         precautions_and_recommendations = {
             "stage0": ("Use prescribed products.", ["Minoxidil", "Biotin", "Gentle hair care"]),
